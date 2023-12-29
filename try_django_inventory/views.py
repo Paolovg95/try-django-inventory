@@ -8,8 +8,9 @@ HTML_STRING = "<h1>HEY YOW sup</h1>"
 def home(request):
     random_id = random.randint(1,2)
     article = Article.objects.get(id=random_id)
-
+    articles = Article.objects.all()
     context = {
+        "articles": articles,
         "object": article,
         "id": article.id,
         "title": article.title,
