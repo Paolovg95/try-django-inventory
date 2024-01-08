@@ -3,7 +3,8 @@
 {% block content %}
 <h1>Search Results</h1>
 {% if object %}
-<p>{{ object.title }}</p>
+<h4>Title:</h4><p>{{ object.title }}</p>
+<h4>Description:</h4>
 <p>{{ object.content }}</p>
 {% endif %}
 {% endblock content %}

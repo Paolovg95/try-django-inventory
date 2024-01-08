@@ -10,6 +10,9 @@ def article_detail_view(request, id=None):
     }
     return render(request, "articles/detail.html", context)
 def article_create_view(request):
+    print(request.GET)
+    # {'csrfmiddlewaretoken': ['someCSRFvalue'], 'title': ['another one'], 'content': ['like a dj ']}
+
     context = {
     }
     return render(request, "articles/create.html", context)
@@ -18,18 +21,15 @@ def articles_search_view(request):
     # print(dir(request))
     # dir() Attributes of the class
     # print(request.GET)
-    query_dict = request.GET #query_dict is a dictionary
-    # query = query_dict.get("q") # <input type="text" name="q">
+
+    query_dict = request.GET # query_dict is a QueryDict
+    # Example : {'q': ['2']}
+
+    print(query_dict)
     try:
-        query = int(query_dict.get("q"))
+        query = int(query_dict.get("q")) # <input type="text" name="q">
+        article = Article.objects.get(id=query)
     except:
-        query = None
-    if query is not None:
-        try:
-            article = Article.objects.get(id=query)
-        except:
-            article = None
-    else:
         article = None
     context = {
         'object': article
