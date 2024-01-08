@@ -3,7 +3,6 @@ from .models import Article
 
 # admin.site.register(Article)
 # Register your models here.
-
+@admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('id','title')
-admin.site.register(Article, ArticleAdmin)
+    list_display = ('title','id')

@@ -10,12 +10,17 @@ def article_detail_view(request, id=None):
     }
     return render(request, "articles/detail.html", context)
 def article_create_view(request):
-    print(request.GET)
+    # print(request.POST)
     # {'csrfmiddlewaretoken': ['someCSRFvalue'], 'title': ['another one'], 'content': ['like a dj ']}
-
-    context = {
-    }
-    return render(request, "articles/create.html", context)
+    context = {}
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        article = Article.objects.create(title=title, content=content)
+        article.save()
+        context['article'] = article
+        context['created'] = True
+    return render(request, "articles/create.html", context=context)
 
 def articles_search_view(request):
     # print(dir(request))
@@ -25,7 +30,7 @@ def articles_search_view(request):
     query_dict = request.GET # query_dict is a QueryDict
     # Example : {'q': ['2']}
 
-    print(query_dict)
+    # print(query_dict)
     try:
         query = int(query_dict.get("q")) # <input type="text" name="q">
         article = Article.objects.get(id=query)
