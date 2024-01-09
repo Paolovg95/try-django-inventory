@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from .models import Article
 # Create your views here.
 def article_detail_view(request, id=None):
@@ -9,6 +10,7 @@ def article_detail_view(request, id=None):
         "article": article
     }
     return render(request, "articles/detail.html", context)
+@login_required
 def article_create_view(request):
     # print(request.POST)
     # {'csrfmiddlewaretoken': ['someCSRFvalue'], 'title': ['another one'], 'content': ['like a dj ']}
