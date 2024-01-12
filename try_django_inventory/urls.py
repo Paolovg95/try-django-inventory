@@ -23,7 +23,8 @@ urlpatterns = [
     path('articles/', article_views.articles_search_view),
     path('articles/create/', article_views.article_create_view, name='create_article'),
     path('articles/<int:id>/', article_views.article_detail_view),
-    path('login/', account_views.login_view, name="login"),
+    path('login/', account_views.login_view, name='login'),
+    path('register/', account_views.register_view, name='registration'),
     path('logout/', account_views.logout_view, name="logout"),
     path('admin/', admin.site.urls)
 ]
