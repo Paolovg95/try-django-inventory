@@ -27,10 +27,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or 'j8go-s#xppcsm%$p@%q5we7u)l^
 DEBUG = str(os.environ.get('DEBUG')) == "1" #  This will make it False, but if it’s anything but a string of “1”, then it’s True
 ALLOWED_HOSTS = []
 
-ENV_ALLOWED_HOSTS = os.environ.get('ENV_ALLOWED_HOSTS')
+ENV_ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOST')
 
 if ENV_ALLOWED_HOSTS is not None:
-    ALLOWED_HOSTS += [ENV_ALLOWED_HOSTS]
+    ALLOWED_HOSTS += [os.environ.get('DJANGO_ALLOWED_HOST')]
 # Application definition
 
 INSTALLED_APPS = [
