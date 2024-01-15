@@ -13,17 +13,18 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
+def slugify_instance_title(instance, save=False):
+    instance.slug = slugify(instance.title)
+    if save:
+        instance.save()
+
 def article_pre_save(sender, instance, *args, **kwargs):
-    # print("instance", instance)
-    if instance.slug is None:
-        instance.slug = slugify(instance.title)
-    # print("sender", sender)
-    # print(kwargs)
+    slug = slugify(instance.title)
+    if instance.slug is None or slug != instance.slug:
+        slugify_instance_title(instance)
 pre_save.connect(article_pre_save, sender=Article)
 
 def article_post_save(created, instance, sender, *args, **kwargs):
     if created:
-        instance.slug = "Some sluuuuggg"
-        instance.save()
-
+        slugify_instance_title(instance, save=True)
 post_save.connect(article_post_save, sender=Article)
