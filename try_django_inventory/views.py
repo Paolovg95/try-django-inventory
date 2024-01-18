@@ -1,21 +1,16 @@
 import random
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.shortcuts import render
 from articles.models import Article
 
-HTML_STRING = "<h1>HEY YOW sup</h1>"
 
 def home(request):
-    random_id = random.randint(1,2)
-    article = Article.objects.get(id=random_id)
     articles = Article.objects.all()
     context = {
         "articles": articles,
-        "object": article,
-        "id": article.id,
-        "title": article.title,
-        "content": article.content
     }
+    return render(request, "home.html", context)
     # template = get_template("home.html")
-    HTML_STRING = render_to_string("home.html", context=context)
-    return HttpResponse(HTML_STRING)
+    # HTML_STRING = render_to_string("home.html", context=context)
+    # return HttpResponse(HTML_STRING)
