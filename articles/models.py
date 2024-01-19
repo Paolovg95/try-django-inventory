@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
+from django.urls import reverse
 from .utils import slugify_instance_title
 
 # Create your models here.
@@ -14,6 +15,9 @@ class Article(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("article-detail", kwargs={"slug": self.slug})
 
 def article_pre_save(instance, **kwargs):
     slug = slugify(instance.title)

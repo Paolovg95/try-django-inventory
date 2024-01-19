@@ -13,7 +13,7 @@
     </form>
   </div>
 {% else %}
-  <p>Your article has been created! Check here: <a href="/articles/{{ article.id }}">{{ article.title }}</a></p>
+  <p>Your article has been created! Check here: <a href="/articles/{{ article.slug }}">{{ article.title }}</a></p>
   <br>
   <a href="{% url 'create_article' %}">Create a new article</a>
 {% endif %}

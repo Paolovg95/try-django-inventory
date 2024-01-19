@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import Http404
 from .models import Article
 from .forms import ArticleForm
@@ -39,17 +40,20 @@ def articles_search_view(request):
     # print(dir(request))
     # dir() Attributes of the class
     # print(request.GET)
-
-    query_dict = request.GET # query_dict is a QueryDict
+    query_dict = request.GET.get("q") # <input type="text" name="q">
+    # query_dict is a QueryDict
     # Example : {'q': ['2']}
 
     # print(query_dict)
-    try:
-        query = int(query_dict.get("q")) # <input type="text" name="q">
-        article = Article.objects.get(id=query)
-    except:
-        article = None
+    # try:
+    #     query = query_dict.get("q") # <input type="text" name="q">
+    # except:
+    #     query = None
+    qs = Article.objects.all()
+    if qs is not None:
+        lookup = Q(title__icontains=query_dict) | Q(content__icontains=query_dict)
+        qs = Article.objects.filter(lookup)
     context = {
-        'object': article
+        'objects': qs
     }
     return render(request, "articles/search.html", context)

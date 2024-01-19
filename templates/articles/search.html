@@ -2,9 +2,15 @@
 
 {% block content %}
 <h1>Search Results</h1>
-{% if object %}
-<h4>Title:</h4><p>{{ object.title }}</p>
-<h4>Description:</h4>
-<p>{{ object.content }}</p>
-{% endif %}
+
+<ol>
+  {% for object in objects %}
+    {% if object.title %}
+      <li>
+        <a href="{{ object.get_absolute_url }}">{{ object.title }}</a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ol>
+
 {% endblock content %}
