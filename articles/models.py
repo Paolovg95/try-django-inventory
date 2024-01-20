@@ -1,10 +1,12 @@
 from django.db import models
+from django.conf import settings
 from django.db.models.signals import pre_save, post_save
 from django.db.models import Q
 from django.utils.text import slugify
 from django.urls import reverse
 from .utils import slugify_instance_title
 
+User = settings.AUTH_USER_MODEL
 # Create your models here.
 class ArticleSearchQuery(models.QuerySet):
     def search(self,query=None):
@@ -22,6 +24,7 @@ class ArticleManager(models.Manager):
 
 
 class Article(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     title = models.TextField()
     content = models.TextField()
     slug = models.SlugField(unique=True, blank=True, null=True)
