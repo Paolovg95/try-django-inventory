@@ -49,10 +49,9 @@ def articles_search_view(request):
     #     query = query_dict.get("q") # <input type="text" name="q">
     # except:
     #     query = None
-    qs = Article.objects.all()
-    if qs is not None:
-        lookup = Q(title__icontains=query_dict) | Q(content__icontains=query_dict)
-        qs = Article.objects.filter(lookup)
+    qs = Article.objects.search(query_dict)
+        # lookup = Q(title__icontains=query_dict) | Q(content__icontains=query_dict)
+        # qs = Article.objects.filter(lookup)
     context = {
         'objects': qs
     }
