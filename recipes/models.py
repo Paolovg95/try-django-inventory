@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.db import models
 from .validators import validate_unit_measure
+from .utils import number_str_to_float
 
 User = settings.AUTH_USER_MODEL
 # Create your models here.
@@ -30,8 +31,18 @@ class RecipeIngredient(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=300, blank=True, null=True)
     quantity = models.CharField(max_length=50)
+    quantity_as_float = models.FloatField(blank=True,null=True)
     unit = models.CharField(max_length=50, validators=[validate_unit_measure])
     directions = models.TextField(max_length=300, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        quantity = self.quantity
+        quantity_float, quantity_boolean = number_str_to_float(quantity)
+        if quantity_boolean:
+            self.quantity_as_float = quantity_float
+        else:
+            self.quantity_as_float = None
+        super().save(*args, **kwargs)
