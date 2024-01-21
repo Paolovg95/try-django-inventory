@@ -6,3 +6,4 @@ typing-extensions==4.1.1
 django-dotenv==1.4.2
 gunicorn
 psycopg2-binary
+pint
