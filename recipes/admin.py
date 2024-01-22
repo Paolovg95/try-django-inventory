@@ -6,7 +6,7 @@ from .models import Recipe, RecipeIngredient
 class RecipeIngredientInline(admin.StackedInline):
     model = RecipeIngredient
     extra = 0
-    # fields = ['name', 'quantity', 'unit', 'directions', 'quantity_as_float']
+    fields = ['name', 'quantity', 'unit', 'directions', 'quantity_as_float']
     readonly_fields = ['quantity_as_float','to_mks', 'to_imperial']
 
 @admin.register(Recipe)
