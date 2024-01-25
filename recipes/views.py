@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Recipe
 from .forms import RecipeForm
 # Create your views here.
+
 @login_required
 def recipe_list_view(request):
     recipes = Recipe.objects.filter(user=request.user)
