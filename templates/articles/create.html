@@ -15,6 +15,6 @@
 {% else %}
   <p>Your article has been created! Check here: <a href="/articles/{{ article.slug }}">{{ article.title }}</a></p>
   <br>
-  <a href="{% url 'create_article' %}">Create a new article</a>
+  <a href="{% url 'articles:create' %}">Create a new article</a>
 {% endif %}
 {% endblock content %}

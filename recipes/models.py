@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from .validators import validate_unit_measure
 from .utils import number_str_to_float
+from django.urls import reverse
 
 User = settings.AUTH_USER_MODEL
 # Create your models here.
@@ -26,7 +27,7 @@ class Recipe(models.Model):
     active = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return "/pantry/recipes/"
+        return reverse("recipes:detail", kwargs={"id": self.id} )
 
 
 
