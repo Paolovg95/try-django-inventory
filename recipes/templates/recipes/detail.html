@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Recipe: {{ recipe.name }}</h1>
+
+<h2>Ingredients</h2> <a href="{{ recipe.get_edit_url }}">Edit</a>
+<ul>
+  {% for ingredient in recipe.recipeingredient_set.all %}
+    <li>{{ingredient.name}} - {{ ingredient.to_mks }}</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'recipes:recipes' %}">Back to recipes</a>
+{% endblock content %}
