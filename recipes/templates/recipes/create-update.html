@@ -8,8 +8,12 @@
 
 <div style="margin-top: 30px;">
   <form action="." method="POST">
-    {% csrf_token ¡%}
+    {% csrf_token %}
     {{ form.as_p }}
+    {% if form_2 %}
+      <h3>Ingredients</h3>
+      {{ form_2.as_p}}
+    {% endif %}
     <div style="margin-top:25px;">
       <button type="submit">Save</button>
     </div>
