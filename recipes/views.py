@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Recipe, RecipeIngredient
 from .forms import RecipeForm, RecipeIngredientForm
 from django.forms import modelformset_factory
+from django.http import HttpResponse
 # Create your views here.
 
 @login_required
@@ -22,6 +23,20 @@ def recipe_detail_view(request, id=None):
     }
     return render(request, "recipes/detail.html", context)
 
+@login_required
+def recipe_hx_detail_view(request, id=None):
+    # recipe = Recipe.objects.filter(id=id)
+    # recipe = get_object_or_404(Recipe, id=id, user=request.user)
+    try:
+        recipe = Recipe.objects.get(id=id, user=request.user)
+    except:
+        recipe = None
+    if recipe is None:
+        return HttpResponse("Not found.")
+    context = {
+        'recipe': recipe
+    }
+    return render(request, "recipes/partials/detail.html", context)
 @login_required
 def recipe_create_view(request):
     form = RecipeForm(request.POST or None)
@@ -56,4 +71,6 @@ def recipe_update_view(request, id=None):
                 child.recipe = parent
             child.save()
         context['message'] = 'Data saved.'
+    if request.htmx:
+        return render(request, "recipes/partials/form.html", context)
     return render(request, "recipes/create-update.html", context)
