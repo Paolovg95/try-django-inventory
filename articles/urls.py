@@ -11,4 +11,5 @@ urlpatterns =[
     path('', articles_search_view),
     path('create/', article_create_view, name='create'),
     path('<slug:slug>/', article_detail_view, name="detail"),
+    path('hx/<slug:slug>/', article_detail_view, name="hx-detail"),
 ]

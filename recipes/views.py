@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Recipe, RecipeIngredient
 from .forms import RecipeForm, RecipeIngredientForm
 from django.forms import modelformset_factory
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 # Create your views here.
 
 @login_required
@@ -62,15 +62,40 @@ def recipe_update_view(request, id=None):
         'formset': formset,
         'recipe': recipe
     }
-    if all([form.is_valid(), formset.is_valid()]):
-        parent = form.save(commit=False)
-        parent.save()
-        for form in formset:
-            child = form.save(commit=False)
-            if child.recipe is None:
-                child.recipe = parent
-            child.save()
-        context['message'] = 'Data saved.'
+    if form.is_valid():
+        form.save()
+        context['message'] = "Data is saved."
     if request.htmx:
         return render(request, "recipes/partials/form.html", context)
     return render(request, "recipes/create-update.html", context)
+
+@login_required
+def recipe_ingredient_hx_update_view(request, parent_id=None, id=None):
+    if not request.htmx:
+        raise Http404
+    try:
+        parent_obj = Recipe.objects.get(id=parent_id, user=request.user)
+    except:
+        parent_obj = None
+    if parent_obj is None:
+        return HttpResponse("Not found.")
+    instance = None
+    if id is not None:
+        try:
+            instance = RecipeIngredient.objects.get(recipe=parent_obj, id=id)
+        except:
+            instance = None
+    form = RecipeIngredientForm(request.POST or None, instance=instance)
+    context = {
+        'form': form,
+        'object': instance
+    }
+    if form.is_valid():
+        new_obj = form.save(commit=False)
+        if instance is None:
+            new_obj.recipe = parent_obj
+        new_obj.save()
+        context['instance'] = new_obj
+        return render(request, "recipes/partials/ingredient-inline.html", context)
+
+    return render(request, "recipes/partials/ingredient-form.html", context)

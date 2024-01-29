@@ -15,6 +15,8 @@ def article_detail_view(request, slug=None):
     context = {
         "article": article
     }
+    if request.htmx:
+        return render(request, "articles/partials/detail.html", context)
     return render(request, "articles/detail.html", context)
 
 @login_required

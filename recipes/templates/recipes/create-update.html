@@ -9,5 +9,8 @@
 
 <div style="margin-top: 30px;">
   {% include 'recipes/partials/form.html' %}
+  {% for ingredient in recipe.recipeingredient_set.all %}
+    {% include 'recipes/partials/ingredient-inline.html' with  object=ingredient %}
+  {% endfor %}
 </div>
 {% endblock content %}
