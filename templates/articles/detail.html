@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ article.title }}</h1>
-<p>{{ article.content }}</p>
+<div hx-get='{{ hx_url }}' hx-trigger="revealed">
+</div>
 {% endblock content %}

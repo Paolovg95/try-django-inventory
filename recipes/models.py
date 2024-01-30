@@ -34,6 +34,7 @@ class Recipe(models.Model):
         return reverse("recipes:update", kwargs={"id": self.id} )
 
 
+
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)

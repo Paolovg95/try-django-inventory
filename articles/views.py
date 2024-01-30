@@ -1,23 +1,32 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from .models import Article
 from .forms import ArticleForm
+from django.urls import reverse
 
 # Create your views here.
 def article_detail_view(request, slug=None):
-    if slug is not None:
-        try:
-            article = Article.objects.get(slug=slug)
-        except:
-            raise Http404
+    hx_url = reverse("articles:hx-detail", kwargs={"slug": slug})
     context = {
-        "article": article
+        "hx_url": hx_url
     }
-    if request.htmx:
-        return render(request, "articles/partials/detail.html", context)
     return render(request, "articles/detail.html", context)
+
+def article_hx_detail_view(request, slug=None):
+    if not request.htmx:
+        raise Http404
+    try:
+        obj = Article.objects.get(slug=slug)
+    except:
+        obj = None
+    if obj is  None:
+        return HttpResponse("Not found.")
+    context = {
+        "object": obj
+    }
+    return render(request, "articles/partials/detail.html", context)
 
 @login_required
 def article_create_view(request):

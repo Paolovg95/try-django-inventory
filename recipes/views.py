@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Recipe, RecipeIngredient
 from .forms import RecipeForm, RecipeIngredientForm
 from django.forms import modelformset_factory
+from django.urls import reverse
 from django.http import HttpResponse, Http404
 # Create your views here.
 
@@ -17,26 +18,28 @@ def recipe_list_view(request):
 @login_required
 def recipe_detail_view(request, id=None):
     # recipe = Recipe.objects.filter(id=id)
-    recipe = get_object_or_404(Recipe, id=id, user=request.user)
+    hx_url = reverse("recipes:hx-detail", kwargs={"id": id})
     context = {
-        'recipe': recipe
+        "hx_url": hx_url
     }
     return render(request, "recipes/detail.html", context)
 
 @login_required
 def recipe_hx_detail_view(request, id=None):
     # recipe = Recipe.objects.filter(id=id)
-    # recipe = get_object_or_404(Recipe, id=id, user=request.user)
+    if not request.htmx:
+        raise Http404
     try:
-        recipe = Recipe.objects.get(id=id, user=request.user)
+        obj = Recipe.objects.get(id=id, user=request.user)
     except:
-        recipe = None
-    if recipe is None:
+        obj = None
+    if obj is  None:
         return HttpResponse("Not found.")
     context = {
-        'recipe': recipe
+        "object": obj
     }
     return render(request, "recipes/partials/detail.html", context)
+
 @login_required
 def recipe_create_view(request):
     form = RecipeForm(request.POST or None)
@@ -85,7 +88,11 @@ def recipe_ingredient_hx_update_view(request, parent_id=None, id=None):
             instance = RecipeIngredient.objects.get(recipe=parent_obj, id=id)
         except:
             instance = None
+    # Initialize form
     form = RecipeIngredientForm(request.POST or None, instance=instance)
+    url = reverse("recipes:hx-ingredient-create", kwargs={"parent_id": parent_obj.id})
+    if instance:
+        url = instance.get_hx_edit_url()
     context = {
         'form': form,
         'object': instance
