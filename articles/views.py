@@ -25,7 +25,9 @@ def article_hx_detail_view(request, slug=None):
         obj = None
     if obj is  None:
         return HttpResponse("Not found.")
+    hx_url = obj.get_absolute_hx_url()
     context = {
+        "hx_url": hx_url,
         "object": obj
     }
     return render(request, "articles/partials/detail.html", context)

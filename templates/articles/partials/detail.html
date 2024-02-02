@@ -1,4 +1,6 @@
-<h1>{{ object.title }}</h1>
-<p>Author {{ object.user.username }}
-<p>{{ object.content }}</p>
-<a hre="" hx-get="/" hx-target="body">Back to recipes</a>
+<li id="article-{{object.id}}" hx-trigger="revealed">
+  <h1>{{ object.title }}</h1>
+  <p>Author {{ object.user.username }}
+  <p>{{ object.content }}</p>
+  <a href="" hx-get="/" hx-target="body">Back to recipes</a>
+</li>

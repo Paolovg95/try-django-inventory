@@ -37,7 +37,7 @@ class Article(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("articles:detail", kwargs={"slug": self.slug})
+        return reverse("articles:hx-detail", kwargs={"slug": self.slug})
     def get_absolute_hx_url(self):
         return reverse("articles:hx-detail", kwargs={"slug": self.slug})
 
