@@ -9,8 +9,10 @@ from django.urls import reverse
 # Create your views here.
 def article_detail_view(request, slug=None):
     hx_url = reverse("articles:hx-detail", kwargs={"slug": slug})
+    obj = Article.objects.get(slug=slug)
     context = {
-        "hx_url": hx_url
+        "hx_url": hx_url,
+        "obj": obj
     }
     return render(request, "articles/detail.html", context)
 

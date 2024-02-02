@@ -2,11 +2,11 @@
 
 {% block content %}
 <h1>Articles list</h1>
-<ul>
+<ul id="articles">
   {% for article in articles %}
     <li>
-      <a href="" hx-get="{{ article.get_absolute_url }}" hx-target="body" >{{ article.title }}</a></li>
+      <a href="" hx-get="{{ article.get_absolute_url }}" hx-target="#articles">{{ article.title }}</a>
     </li>
   {% endfor %}
-  </ul>
+</ul>
 {% endblock %}
