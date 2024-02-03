@@ -57,13 +57,15 @@ def recipe_create_view(request):
 def recipe_update_view(request, id=None):
     recipe = get_object_or_404(Recipe, id=id, user=request.user)
     form = RecipeForm(request.POST or None, instance=recipe)
-    RecipeIngredientFormSet = modelformset_factory(RecipeIngredient, form=RecipeIngredientForm, extra=0)
-    qs = recipe.recipeingredient_set.all()
-    formset = RecipeIngredientFormSet(request.POST or None, queryset=qs)
+    new_ingredient_url = reverse("recipes:hx-ingredient-create", kwargs={"parent_id": recipe.id})
+    # form = RecipeForm(request.POST or None, instance=recipe)
+    # RecipeIngredientFormSet = modelformset_factory(RecipeIngredient, form=RecipeIngredientForm, extra=0)
+    # qs = recipe.recipeingredient_set.all()
+    # formset = RecipeIngredientFormSet(request.POST or None, queryset=qs)
     context = {
         'form': form,
-        'formset': formset,
-        'recipe': recipe
+        'recipe': recipe,
+        'new_ingredient_url': new_ingredient_url
     }
     if form.is_valid():
         form.save()
@@ -94,6 +96,7 @@ def recipe_ingredient_hx_update_view(request, parent_id=None, id=None):
     if instance:
         url = instance.get_hx_edit_url()
     context = {
+        'url': url,
         'form': form,
         'object': instance
     }
@@ -102,7 +105,7 @@ def recipe_ingredient_hx_update_view(request, parent_id=None, id=None):
         if instance is None:
             new_obj.recipe = parent_obj
         new_obj.save()
-        context['instance'] = new_obj
+        context['object'] = new_obj
         return render(request, "recipes/partials/ingredient-inline.html", context)
 
     return render(request, "recipes/partials/ingredient-form.html", context)

@@ -1,4 +1,4 @@
-<form action="." method="POST" hx-post=".">
+<form action="." method="POST" hx-post="." hx-swap="outerHTML">
   {% csrf_token %}
   {% if message %}
     <p>{{ message }}</p>

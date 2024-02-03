@@ -10,8 +10,19 @@
 <div style="margin-top: 30px;">
   {% include 'recipes/partials/form.html' %}
   {% for ingredient in recipe.recipeingredient_set.all %}
-    {% include 'recipes/partials/ingredient-inline.html' with  object=ingredient %}
+    <div id="ingredient-{{ ingredient.id }}">
+      {% include 'recipes/partials/ingredient-inline.html' with  object=ingredient %}
+    </div>
   {% endfor %}
+  {% if new_ingredient_url %}
+    <div id='ingredient-create'>
+
+    </div>
+
+    <button hx-get="{{ new_ingredient_url }}" hx-trigger='click' hx-target='#ingredient-create' hx-swap='afterend'>Add
+      ingredient</button>
+
+  {% endif %}
 </div>
 
 {% endblock content %}

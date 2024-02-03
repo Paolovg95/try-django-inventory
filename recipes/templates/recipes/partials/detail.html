@@ -1,6 +1,7 @@
 <h1>Recipe: {{ object.name }}</h1>
 
-<h2>Ingredients</h2> <a href="{{ recipe.get_edit_url }}">Edit</a>
+<a href="{{ object.get_edit_url }}">Edit</a>
+<h2>Ingredients</h2>
 <ul>
   {% for ingredient in object.recipeingredient_set.all %}
     <li>{{ingredient.name}} - {{ ingredient.to_mks }}</li>
