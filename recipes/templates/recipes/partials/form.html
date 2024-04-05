@@ -13,4 +13,7 @@
   {% endfor %}
     <div class='htmx-indicator'>Loading...</div>
     <button class="htmx-inverted-indicator" type="submit">Save</button>
+    {% if message %}
+      <p>{{ message }}</p>
+    {% endif %}
 </form>
